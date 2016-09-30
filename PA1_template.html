@@ -121,7 +121,7 @@ $(document).ready(function () {
 
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
-<pre class="r"><code> png(file=&quot;Histogram_of_steps_each_day.png&quot;,height=480,width = 480)
+<pre class="r"><code> png(file=&quot;./instructions_fig/Histogram_of_steps_each_day.png&quot;,height=480,width = 480)
  fig1&lt;-hist(aggregateStepsByDay$steps,
         xlab = &quot;Steps&quot;,
         col=&quot;red&quot;,
@@ -160,7 +160,7 @@ print(paste(&quot;Mean of Steps per day:&quot;,meanSteps))</code></pre>
 <pre class="r"><code>print(paste(&quot;Median of Steps per day:&quot;,medianSteps))</code></pre>
 <pre><code>## [1] &quot;Median of Steps per day: 10765&quot;</code></pre>
 <pre class="r"><code>## What is the average daily activity pattern?
-png(file=&quot;Time_series_average_steps_taken.png&quot;,height=480,width = 480)
+png(file=&quot;./instructions_fig/Time_series_average_steps_taken.png&quot;,height=480,width = 480)
 fig2&lt;-plot( aggregateStepsByDayAndInterval$interval,
          aggregateStepsByDayAndInterval$steps,
           ylab = &quot;Steps&quot;,
@@ -188,7 +188,7 @@ nrow(monitoringDataNoNAs[is.na(monitoringDataNoNAs$steps),])</code></pre>
 <pre><code>## [1] 0</code></pre>
 <pre class="r"><code>noNAaggregageStepsByDay&lt;-aggregate(steps ~ date, monitoringDataNoNAs, sum)
 
- png(file=&quot;Histogram_of_steps_each_day_after_imputing.png&quot;,height=480,width = 480)
+ png(file=&quot;./instructions_fig/Histogram_of_steps_each_day_after_imputing.png&quot;,height=480,width = 480)
  fig3&lt;-hist(noNAaggregageStepsByDay$steps,
         xlab = &quot;Steps&quot;,
         col=&quot;blue&quot;,
@@ -236,7 +236,7 @@ names(Weektype)&lt;-&quot;Weektype&quot;
 newNoNaDataSet&lt;-cbind(monitoringDataNoNAs,Weektype)
 
 stepsByDayType&lt;-aggregate(steps ~ interval + Weektype, newNoNaDataSet, mean)
- png(file=&quot;Panel_plot_compare_average_steps_per_5-minute_interval_across_weekdays_and_weekends.png&quot;,height=480,width = 480)
+ png(file=&quot;./instructions_fig/Panel_plot_compare_average_steps_per_5-minute_interval_across_weekdays_and_weekends.png&quot;,height=480,width = 480)
  g&lt;-ggplot(stepsByDayType, aes(interval,steps, color = Weektype)) +
         geom_path() +  
         facet_grid(. ~ Weektype ) +
