@@ -1,38 +1,42 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
 
 
-```{r setup, include=FALSE}
-library(ggplot2)
-knitr::opts_chunk$set(echo = TRUE)
-monitoringData<-read.csv(unz("activity.zip", "activity.csv"),col.names = c("steps","date","interval"),na.strings = NA)
-monitoringData[,2]<-as.data.frame(strptime(monitoringData[,2],format = "%Y-%m-%d"))
-aggregateStepsByDay<-aggregate(steps ~ date, monitoringData, sum)
-aggregateStepsByDayAndInterval<-aggregate(steps ~  interval, monitoringData, mean)
-```
-```{r}
 
+
+```r
  hist(aggregateStepsByDay$steps,
         xlab = "Steps",
         col="red",
         main = "Steps per day"
    )
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
+
+```r
 meanSteps<-mean(aggregateStepsByDay$steps)
 medianSteps<-median(aggregateStepsByDay$steps)
 
 ## What is mean total number of steps taken per day?
 print(paste("Mean of Steps per day:",meanSteps))
+```
+
+```
+## [1] "Mean of Steps per day: 10766.1886792453"
+```
+
+```r
 print(paste("Median of Steps per day:",medianSteps))
+```
 
+```
+## [1] "Median of Steps per day: 10765"
+```
 
+```r
 ## What is the average daily activity pattern?
 
 plot( aggregateStepsByDayAndInterval$interval,
@@ -43,18 +47,41 @@ plot( aggregateStepsByDayAndInterval$interval,
           main = "Average Daily Activity Pattern",
          col="darkred"
     )
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
+
+```r
 aggregateStepsByDayAndInterval[which.max(aggregateStepsByDayAndInterval$steps),]
+```
 
+```
+##     interval    steps
+## 104      835 206.1698
+```
+
+```r
 nrow(monitoringData[is.na(monitoringData$steps),])
+```
 
+```
+## [1] 2304
+```
+
+```r
 ## Imputing missing values
 
 monitoringDataNoNAs<-monitoringData
 monitoringDataNoNAs[is.na(monitoringDataNoNAs)]<-0
 
 nrow(monitoringDataNoNAs[is.na(monitoringDataNoNAs$steps),])
+```
 
+```
+## [1] 0
+```
+
+```r
 noNAaggregageStepsByDay<-aggregate(steps ~ date, monitoringDataNoNAs, sum)
 
  hist(noNAaggregageStepsByDay$steps,
@@ -62,11 +89,29 @@ noNAaggregageStepsByDay<-aggregate(steps ~ date, monitoringDataNoNAs, sum)
         col="blue",
         main = "Steps per day no NA's"
    )
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-1-3.png)<!-- -->
+
+```r
 noNAmeanSteps<-mean(noNAaggregageStepsByDay$steps)
 noNAmedianSteps<-median(noNAaggregageStepsByDay$steps)
 print(paste("Mean of Steps per day:",noNAmeanSteps))
-print(paste("Median of Steps per day:",noNAmedianSteps))
+```
 
+```
+## [1] "Mean of Steps per day: 9354.22950819672"
+```
+
+```r
+print(paste("Median of Steps per day:",noNAmedianSteps))
+```
+
+```
+## [1] "Median of Steps per day: 10395"
+```
+
+```r
 #yes there is a difference after imputing the dataset.
 
 
@@ -86,6 +131,6 @@ stepsByDayType<-aggregate(steps ~ interval + Weektype, newNoNaDataSet, mean)
         labs(x="Interval", y="Steps", title="Avgerage Daily Steps by Weektype")
    
     print(g)
-
-    
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-1-4.png)<!-- -->
