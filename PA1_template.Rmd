@@ -18,12 +18,14 @@ aggregateStepsByDay<-aggregate(steps ~ date, monitoringData, sum)
 aggregateStepsByDayAndInterval<-aggregate(steps ~  interval, monitoringData, mean)
 ```
 ```{r}
-
- hist(aggregateStepsByDay$steps,
+ png(file="Histogram_of_steps_each_day.png",height=480,width = 480)
+ fig1<-hist(aggregateStepsByDay$steps,
         xlab = "Steps",
         col="red",
         main = "Steps per day"
    )
+print(fig1)
+dev.off()
 
 meanSteps<-mean(aggregateStepsByDay$steps)
 medianSteps<-median(aggregateStepsByDay$steps)
@@ -34,8 +36,8 @@ print(paste("Median of Steps per day:",medianSteps))
 
 
 ## What is the average daily activity pattern?
-
-plot( aggregateStepsByDayAndInterval$interval,
+png(file="Time_series_average_steps_taken.png",height=480,width = 480)
+fig2<-plot( aggregateStepsByDayAndInterval$interval,
          aggregateStepsByDayAndInterval$steps,
           ylab = "Steps",
           type = "l",
@@ -43,7 +45,8 @@ plot( aggregateStepsByDayAndInterval$interval,
           main = "Average Daily Activity Pattern",
          col="darkred"
     )
-
+print(fig2)
+dev.off()
 aggregateStepsByDayAndInterval[which.max(aggregateStepsByDayAndInterval$steps),]
 
 nrow(monitoringData[is.na(monitoringData$steps),])
@@ -57,11 +60,14 @@ nrow(monitoringDataNoNAs[is.na(monitoringDataNoNAs$steps),])
 
 noNAaggregageStepsByDay<-aggregate(steps ~ date, monitoringDataNoNAs, sum)
 
- hist(noNAaggregageStepsByDay$steps,
+ png(file="Histogram_of_steps_each_day_after_imputing.png",height=480,width = 480)
+ fig3<-hist(noNAaggregageStepsByDay$steps,
         xlab = "Steps",
         col="blue",
         main = "Steps per day no NA's"
    )
+ print(fig3)
+dev.off()
 noNAmeanSteps<-mean(noNAaggregageStepsByDay$steps)
 noNAmedianSteps<-median(noNAaggregageStepsByDay$steps)
 print(paste("Mean of Steps per day:",noNAmeanSteps))
@@ -79,13 +85,13 @@ names(Weektype)<-"Weektype"
 newNoNaDataSet<-cbind(monitoringDataNoNAs,Weektype)
 
 stepsByDayType<-aggregate(steps ~ interval + Weektype, newNoNaDataSet, mean)
-
+ png(file="Panel_plot_compare_average_steps_per_5-minute_interval_across_weekdays_and_weekends.png",height=480,width = 480)
  g<-ggplot(stepsByDayType, aes(interval,steps, color = Weektype)) +
         geom_path() +  
         facet_grid(. ~ Weektype ) +
         labs(x="Interval", y="Steps", title="Avgerage Daily Steps by Weektype")
    
     print(g)
-
+dev.off()
     
 ```
